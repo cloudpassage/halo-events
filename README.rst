@@ -1,6 +1,22 @@
 Python module: haloevents
 =========================
 
+.. image:: https://travis-ci.org/cloudpassage/halo-events.svg?branch=master
+    :target: https://travis-ci.org/cloudpassage/halo-events
+
+.. image:: https://codeclimate.com/github/cloudpassage/halo-events/badges/gpa.svg
+   :target: https://codeclimate.com/github/cloudpassage/halo-events
+   :alt: Code Climate
+
+.. image:: https://codeclimate.com/github/cloudpassage/halo-events/badges/coverage.svg
+  :target: https://codeclimate.com/github/cloudpassage/halo-events/coverage
+  :alt: Test Coverage
+
+.. image:: https://codeclimate.com/github/cloudpassage/halo-events/badges/issue_count.svg
+   :target: https://codeclimate.com/github/cloudpassage/halo-events
+   :alt: Issue Count
+
+
 Installing:
 -----------
 
