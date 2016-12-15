@@ -1,0 +1,10 @@
+sudo: required
+language: python
+services:
+- docker
+script: docker build -t halo-events .
+after_script: docker run -it --rm halo-events /bin/sh -c "git checkout master; codeclimate-test-reporter
+  --token $CODECLIMATE_REPO_TOKEN --debug"
+env:
+  global:
+    secure: yOGnng28SFSS3Rfb/J+NJQlPqaBQcbfMAaN+BI399xsxVxhRueNEK2Jl8l1Sdyls8JK4WuZoCTQ37j3t7QzdwMWuMUXbmlnper44mpuncX2cdQTdjBY89tuMbhP8jb0jjjz/o3J8wpOaXcMktw2uiVRwXtEB7N4Z3BnkdjwNCBJdsMI0m1OL8EHIHP3rkvF31sGhhD7bGzBRL2FU1crBbdXWC57DStxoRdaaQBt09Qa9kZTe2JZTEwoixpBBi2oUyixnGbllUc4XhCPO3DBbKzFN3qV3NfbmOuUByuXFucmHJ46x9k7Axt3GNJ6ieI+2Edx2zCu3hDOlgWk2dAvjp0mOO66wtKmKToYo0KuUPlAUHby14KcD35oXyQNWc9zfTkE8iqPIo/EbJg9kgrnmUQAogCjhxVCX+fvOYzKdMkN8Ec3wWc0NJlo7y/AYWxFbvTJGLGmdC3+7NN+KKPDaaj2ptCl9xsIniK+3fnzX/XjlkF1aH0I4ThhVKcimiE0oN6ElC/1FexLZtIa0CECiWM+4lpzK7cKbt/C2s2Mqs/ZnOTJbQzMgcUw/Rm/nA5MACdx5DRyWZSPrnFL4WjZDUSIpRr4KaoMJsvz3chDCGa6krOrnOBMrjOt18DRVsAWkVNYPz2z22OTK4LDFYVbAlEhJ01Iw5LbdgswZGZu+tGM=
