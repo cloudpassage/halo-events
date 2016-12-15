@@ -20,7 +20,7 @@ Python module: haloevents
 Installing:
 -----------
 
-* Clone this repository down and enter it's root dir
+* Clone this repository down and enter its root dir
 * pip install .
 
 
