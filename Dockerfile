@@ -14,7 +14,7 @@ WORKDIR /app/
 RUN pip install pytest==2.8.0 \
     pytest-flake8==0.1 \
     pytest-cover==3.0.0 \
-    codeclimate-test-reporter==0.2.0 \
+    codeclimate-test-reporter==0.2.0
 
 RUN pip install -e .
 
