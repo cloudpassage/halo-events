@@ -21,27 +21,25 @@ class HaloEvents(object):
         max_threads (int): Max number of open threads.  Defaults to 10.
         batch_size (int): Limit the depth of the query.  Defaults to 20.
         integration_name (str): Name of the tool using this library.
+        search_params (dict): Params for event query
 
 
     """
-    def __init__(self, halo_key, halo_secret,
-                 api_host="api.cloudpassage.com",
-                 api_port=443,
-                 start_timestamp=Utility.iso8601_now(),
-                 max_threads=10,
-                 batch_size=20,
-                 integration_name=""):
+    def __init__(self, halo_key, halo_secret, **kwargs):
         self.halo_key = halo_key
         self.halo_secret = halo_secret
-        self.api_host = api_host
-        self.api_port = api_port
-        self.start_timestamp = start_timestamp
-        self.max_threads = max_threads
-        self.batch_size = batch_size
+        self.api_host = "api.cloudpassage.com"
+        self.api_port = 443
+        self.start_timestamp = Utility.iso8601_now()
+        self.max_threads = 10
+        self.batch_size = 20
         self.last_event_timestamp = None
+        self.last_event_id = ""
         self.events = []
         self.halo_session = None
-        self.ua = Utility.build_ua(integration_name)
+        self.ua = Utility.build_ua("")
+        self.search_params = {}
+        self.set_attrs_from_kwargs(kwargs)
 
     def __iter__(self):
         """Yields events one at a time"""
@@ -49,13 +47,26 @@ class HaloEvents(object):
             for event in self.get_next_batch():
                 yield event
 
+    def set_attrs_from_kwargs(self, kwargs):
+        arg_list = ["start_timestamp", "max_threads", "batch_size",
+                    "search_params", "api_host", "api_port"]
+        for arg in arg_list:
+            if arg in kwargs:
+                setattr(self, arg, kwargs[arg])
+        if "integration_name" in kwargs:
+            setattr(self, ua, Utility.build_ua(kwargs["integration_name"]))
+
     def get_next_batch(self):
         """Gets the next batch of events from the Halo API"""
         url_list = self.create_url_list()
         pages = self.get_pages(url_list)
         events = Utility.sorted_items_from_pages(pages, "events", "created_at")
+        if events[0]["id"] == self.last_event_id:
+            del events[0]
         last_event_timestamp = events[-1]['created_at']
+        last_event_id = events[-1]['id']
         self.last_event_timestamp = last_event_timestamp
+        self.last_event_id = last_event_id
         return events
 
     def build_halo_session(self):
@@ -75,7 +86,7 @@ class HaloEvents(object):
         """
 
         base_url = "/v1/events"
-        modifiers = {}
+        modifiers = self.search_params
         if self.start_timestamp is not None:
             modifiers["since"] = self.start_timestamp
         if self.last_event_timestamp is not None:

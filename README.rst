@@ -16,6 +16,12 @@ Python module: haloevents
    :target: https://codeclimate.com/github/cloudpassage/halo-events
    :alt: Issue Count
 
+What it is:
+-----------
+
+Multi-threaded API wrapper for the CloudPassage /v1/events endpoint.  Give it
+API creds and talk to it like it's a generator.  See example, below.
+
 
 Installing:
 -----------
@@ -29,10 +35,12 @@ Example usage:
 
 ::
 
+
         import haloevents
-        events = haloevents.HaloEvents(halo_key, halo_secret)
+        events = haloevents.HaloEvents(key, secret)
         for event in events:
-            print event["created_at"]
+            message = "%s\t%s\t%s" % (event["created_at"], event["type"], event["id"])
+            print(message)
 
 
 Testing:
