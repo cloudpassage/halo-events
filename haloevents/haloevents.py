@@ -54,7 +54,7 @@ class HaloEvents(object):
             if arg in kwargs:
                 setattr(self, arg, kwargs[arg])
         if "integration_name" in kwargs:
-            setattr(self, ua, Utility.build_ua(kwargs["integration_name"]))
+            setattr(self, "ua", Utility.build_ua(kwargs["integration_name"]))
 
     def get_next_batch(self):
         """Gets the next batch of events from the Halo API"""
