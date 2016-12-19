@@ -76,6 +76,7 @@ class HaloEvents(object):
                                                 api_host=self.api_host,
                                                 api_port=self.api_port,
                                                 integration_string=self.ua)
+        halo_session.authenticate_client()
         return halo_session
 
     def create_url_list(self):
