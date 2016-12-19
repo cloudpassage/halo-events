@@ -11,5 +11,5 @@ haloevents = imp.load_module(module_name, fp, pathname, description)
 
 
 class TestUnitHaloEvents:
-    def test_utility_8601_now(self):
+    def test_unit_haloevents_instantiate(self):
         assert haloevents.HaloEvents("", "")
