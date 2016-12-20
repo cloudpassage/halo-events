@@ -42,7 +42,7 @@ class HaloEvents(object):
         self.set_attrs_from_kwargs(kwargs)
 
     def __iter__(self):
-        """Yields events one at a time"""
+        """Yields events one at a time. Forever."""
         while True:
             for event in self.get_next_batch():
                 yield event
@@ -63,6 +63,11 @@ class HaloEvents(object):
         events = Utility.sorted_items_from_pages(pages, "events", "created_at")
         if events[0]["id"] == self.last_event_id:
             del events[0]
+        try:
+            last_scan_timestamp = scans[-1]['created_at']
+        except IndexError:
+            time.sleep(3)
+            return []
         last_event_timestamp = events[-1]['created_at']
         last_event_id = events[-1]['id']
         self.last_event_timestamp = last_event_timestamp
