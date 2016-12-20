@@ -1,8 +1,26 @@
 Changelog
 =========
 
-v0.10
------
+v0.10.2
+-------
+
+Changes
+~~~~~~~
+
+- Added a brief pause in iteration if an entire batch comes back empty.
+  [Ash Wilson]
+
+v0.10.1 (2016-12-19)
+--------------------
+
+Changes
+~~~~~~~
+
+- Get an API token prior to thread mapping (performance enhancement)
+  [Ash Wilson]
+
+v0.10 (2016-12-16)
+------------------
 
 New
 ~~~
