@@ -4,6 +4,7 @@ been ordered correctly."""
 
 import cloudpassage
 from multiprocessing.dummy import Pool as ThreadPool
+import time
 from utility import Utility
 
 
@@ -64,7 +65,7 @@ class HaloEvents(object):
         if events[0]["id"] == self.last_event_id:
             del events[0]
         try:
-            last_scan_timestamp = scans[-1]['created_at']
+            last_event_timestamp = events[-1]['created_at']
         except IndexError:
             time.sleep(3)
             return []
