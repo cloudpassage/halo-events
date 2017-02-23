@@ -1,8 +1,16 @@
 Changelog
 =========
 
-v0.10.2
+v0.10.3
 -------
+
+Changes
+~~~~~~~
+
+- Improved handling of empty event set from API. [Ash Wilson]
+
+v0.10.2 (2016-12-20)
+--------------------
 
 Changes
 ~~~~~~~
