@@ -62,8 +62,12 @@ class HaloEvents(object):
         url_list = self.create_url_list()
         pages = self.get_pages(url_list)
         events = Utility.sorted_items_from_pages(pages, "events", "created_at")
-        if events[0]["id"] == self.last_event_id:
-            del events[0]
+        try:
+            if events[0]["id"] == self.last_event_id:
+                del events[0]
+        except IndexError:  # This happens when the return set is empty...
+            time.sleep(3)
+            return []
         try:
             last_event_timestamp = events[-1]['created_at']
         except IndexError:
