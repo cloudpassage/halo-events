@@ -48,3 +48,25 @@ class TestUnitUtility:
                                                             pagination_key,
                                                             sort_field)
         assert expected == actual
+
+    def test_get_number_of_empty_pages(self):
+        page_1 = {"events": [{"number": 1},
+                             {"number": 2},
+                             {"number": 3}]}
+        page_2 = {"events": []}
+        pages = [page_1, page_2]
+        empty_pages = haloevents.Utility.get_number_of_empty_pages(pages)
+        assert empty_pages == 1
+
+    def test_get_number_of_full_pages(self):
+        page_size = 3
+        page_1 = {"events": [{"number": 1},
+                             {"number": 2},
+                             {"number": 3}]}
+        page_2 = {"events": [{"number": 1},
+                             {"number": 2}]}
+        page_3 = {"events": []}
+        pages = [page_1, page_2, page_3]
+        full_pages = haloevents.Utility.get_number_of_full_pages(pages,
+                                                                 page_size)
+        assert full_pages == 1

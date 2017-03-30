@@ -71,3 +71,19 @@ class Utility(object):
             url = Utility.build_url(base_url, modifiers)
             url_list.append(url)
         return url_list
+
+    @classmethod
+    def get_number_of_empty_pages(cls, pages):
+        empty_pages = 0
+        for page in pages:
+            if page["events"] == []:
+                empty_pages += 1
+        return empty_pages
+
+    @classmethod
+    def get_number_of_full_pages(cls, pages, page_size):
+        full_pages = 0
+        for page in pages:
+            if len(page["events"]) == page_size:
+                full_pages += 1
+        return full_pages

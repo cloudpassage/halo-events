@@ -33,18 +33,23 @@ class HaloEvents(object):
         self.api_port = 443
         self.start_timestamp = Utility.iso8601_now()
         self.max_threads = 10
-        self.batch_size = 20
+        self.batch_size = 1
+        self.page_size = 100
         self.last_event_timestamp = None
         self.last_event_id = ""
         self.events = []
         self.halo_session = None
         self.ua = Utility.build_ua("")
-        self.search_params = {}
+        self.search_params = {"per_page": self.page_size}
+        self.debug = False
         self.set_attrs_from_kwargs(kwargs)
 
     def __iter__(self):
         """Yields events one at a time. Forever."""
         while True:
+            if self.debug is True:
+                print("Batch size: %d Tstamp: %s" % (self.batch_size,
+                                                     self.last_event_timestamp))
             for event in self.get_next_batch():
                 yield event
 
@@ -57,10 +62,40 @@ class HaloEvents(object):
         if "integration_name" in kwargs:
             setattr(self, "ua", Utility.build_ua(kwargs["integration_name"]))
 
+    @classmethod
+    def get_adjustment_factor(cls, pages, page_size):
+        total_pages = len(pages)
+        full_pages = Utility.get_number_of_full_pages(pages, page_size)
+        empty_pages = Utility.get_number_of_empty_pages(pages)
+        print("Total: %d Full: %d Empty: %d" % (total_pages, full_pages,
+                                                empty_pages))
+        if empty_pages == 0:
+            if total_pages == full_pages:
+                adjustment_factor = 1  # Add one if all pages are full
+            else:
+                adjustment_factor = 0  # No empty pages, not all full. Perfect.
+        elif full_pages == 0:
+            adjustment_factor = -9
+        else:
+            adjustment_factor = -1
+        return adjustment_factor
+
+    def adjust_batch_size(self, adjustment_factor):
+        target_batch_size = adjustment_factor + self.batch_size
+        if target_batch_size < 1:  # Don't go below one page.
+            self.batch_size = 1
+        elif target_batch_size > self.max_threads:  # Don't exceed max_threads.
+            self.batch_size = self.max_threads
+        else:
+            self.batch_size = target_batch_size
+        return
+
     def get_next_batch(self):
         """Gets the next batch of events from the Halo API"""
         url_list = self.create_url_list()
         pages = self.get_pages(url_list)
+        adjustment_factor = self.get_adjustment_factor(pages, self.page_size)
+        self.adjust_batch_size(adjustment_factor)
         events = Utility.sorted_items_from_pages(pages, "events", "created_at")
         try:
             if events[0]["id"] == self.last_event_id:
@@ -70,11 +105,10 @@ class HaloEvents(object):
             return []
         try:
             last_event_timestamp = events[-1]['created_at']
+            last_event_id = events[-1]['id']
         except IndexError:
             time.sleep(3)
             return []
-        last_event_timestamp = events[-1]['created_at']
-        last_event_id = events[-1]['id']
         self.last_event_timestamp = last_event_timestamp
         self.last_event_id = last_event_id
         return events
