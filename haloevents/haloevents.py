@@ -49,7 +49,7 @@ class HaloEvents(object):
         while True:
             if self.debug is True:
                 print("Batch size: %d Tstamp: %s" % (self.batch_size,
-                                                     self.last_event_timestamp))
+                                                     self.last_event_timestamp))  # NOQA
             for event in self.get_next_batch():
                 yield event
 
