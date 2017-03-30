@@ -1,8 +1,17 @@
 Changelog
 =========
 
-v0.10.3
+v0.10.4
 -------
+
+New
+~~~
+
+- Number of concurrent requests auto-adjusts depending on event volume.
+  [Ash Wilson]
+
+v0.10.3 (2017-02-23)
+--------------------
 
 Changes
 ~~~~~~~
