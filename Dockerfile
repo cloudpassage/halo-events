@@ -19,6 +19,6 @@ RUN pip install pytest==2.8.0 \
 
 RUN pip install -e .
 
-RUN py.test --cov=haloevents
+RUN py.test
 
 RUN git branch -v
