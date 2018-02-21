@@ -32,16 +32,7 @@ class HaloEvents(object):
         self.api_host = "api.cloudpassage.com"
         self.api_port = 443
         self.start_timestamp = Utility.iso8601_now()
-        self.max_threads = 10
-        self.batch_size = 10
-        self.page_size = 100
-        self.last_event_timestamp = None
-        self.last_event_id = ""
-        self.events = []
-        self.halo_session = None
         self.ua = Utility.build_ua("")
-        self.search_params = {"per_page": self.page_size}
-        self.debug = False
         self.set_attrs_from_kwargs(kwargs)
 
     def __iter__(self):
@@ -53,9 +44,6 @@ class HaloEvents(object):
         streamer = cloudpassage.TimeSeries(session, self.start_timestamp,
                                            "/v1/events", "events")
         while True:
-            if self.debug is True:
-                print("Batch size: %d Tstamp: %s" % (self.batch_size,
-                                                     self.last_event_timestamp))  # NOQA
             for event in streamer:
                 yield event
 
