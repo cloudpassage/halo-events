@@ -3,8 +3,6 @@ consumption of events, only providing information to the iterator when it's
 been ordered correctly."""
 
 import cloudpassage
-from multiprocessing.dummy import Pool as ThreadPool
-import time
 from utility import Utility
 
 
